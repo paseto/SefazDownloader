@@ -1,0 +1,16 @@
+{
+  "name": "paseto/sefazd",
+  "description":"Download/Reader dados do documento/xml do Portal SEFAZ",
+  "autors":[
+    {
+      "name":"Giovani Paseto",
+      "email":"giovaniw2@gmail.com"
+    }
+  ],
+  "require":{},
+  "autoload":{
+    "psr-4":{
+      "sefazd\\":"src"
+    }
+  }
+}

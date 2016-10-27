@@ -13,15 +13,7 @@ if ($a == 'getDoc') {
     $captcha = filter_input(INPUT_POST, 'captcha');
     //$html = SefazDownloader::getResult($chave, $captcha);
 
-    $cnpj = "86933033000100";
-    
-    if (strstr($chave, $cnpj)){
-        echo 'chave exite';
-    }else{
-        echo 'chave nao existe';
-    }
-        
-    exit();
+    $cnpj = "86933033000100";        
 
     $path = "/var/www/sefazd/";
 

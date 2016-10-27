@@ -1,6 +1,9 @@
 *.html
 *.txt
+*.pem
 .gitignore
 .htaccess
+composer.json
+cookies1.txt
 result.php
 vendor/

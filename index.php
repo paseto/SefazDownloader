@@ -1,7 +1,8 @@
 <?php
+ini_set('display_errors', 1);
 session_start();
 require_once './vendor/autoload.php';
-$_SESSION['captcha'] = '';
+//$_SESSION['captcha'] = '';
 
 use sefazd\SefazDownloader;
 use sefazd\HTMLReader;
@@ -10,10 +11,27 @@ $a = filter_input(INPUT_POST, 'action');
 if ($a == 'getDoc') {
     $chave = filter_input(INPUT_POST, 'chave');
     $captcha = filter_input(INPUT_POST, 'captcha');
-    $html = SefazDownloader::getResult($chave, $captcha);
-    $_SESSION['captcha'] = $captcha;    
+    //$html = SefazDownloader::getResult($chave, $captcha);
 
-    HTMLReader::read($html);
+    $cnpj = "86933033000100";
+    
+    if (strstr($chave, $cnpj)){
+        echo 'chave exite';
+    }else{
+        echo 'chave nao existe';
+    }
+        
+    exit();
+
+    $path = "/var/www/sefazd/";
+
+    $pass = "245792457";
+    
+    $html = SefazDownloader::downloadXmlSefaz($captcha, $chave, $cnpj, $path, $pass);
+    
+    $_SESSION['captcha'] = $captcha;
+
+    //HTMLReader::read($html);
 
 //    echo "<br>-- html resposta 1 -- <br/>" . $html;
 //

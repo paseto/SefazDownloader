@@ -285,8 +285,7 @@ class SefazDownloader {
         $result = curl_exec($ch);
         
         $html = $result;
-
-        //Optional write output
+        
         $fo = fopen($chNFe . '.html', 'w+');
         fwrite($fo, $html);
 

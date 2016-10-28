@@ -1,10 +1,10 @@
 *.html
 *.txt
+*.xml
 *.pem
 .gitignore
 .htaccess
 composer.json
 cookies1.txt
 result.php
-read.php
 vendor/

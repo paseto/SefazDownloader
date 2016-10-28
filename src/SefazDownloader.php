@@ -79,17 +79,20 @@ class SefazDownloader {
         $viewstate = $viewstate[1];
         $eventValidation = $eventValidation[1];
 
-        try {
+        $tagDownload = '';
+        if (!empty($tagTeste)){
             $tagDownload = $tagTeste[0];
-        } catch (\Exception $e) {
-            throw new \Exception('Não foi possível fazer o download do XML, por favor atualize o captcha e tente novamente (sessão expirada)');
         }
+        ////        try {
+//            $tagDownload = $tagTeste[0];
+//        } catch (\Exception $e) {
+//            throw new \Exception('Não foi possível fazer o download do XML, por favor atualize o captcha e tente novamente (sessão expirada)');
+//        }
 
         if ($tagDownload == "Chave de Acesso") {
 
-            // URL onde a sefaz fornece o download do xml
             $url_download = "http://www.nfe.fazenda.gov.br/portal/consultaCompleta.aspx?tipoConteudo=XbSeqxE8pl8=";
-            // Verifica se o certificado existe na pasta
+
             if (!file_exists($PathCertificado . $CNPJ . '_priKEY.pem') ||
                     !file_exists($PathCertificado . $CNPJ . '_priKEY.pem') ||
                     !file_exists($PathCertificado . $CNPJ . '_priKEY.pem')) {
@@ -178,7 +181,7 @@ class SefazDownloader {
 
             return $response_xml;
         } else {
-            throw new \Exception('Não foi possível fazer o download do XML, por favor tente novamente (Verifique o Captcha)');
+            return "erro";
         }
     }
 
@@ -264,8 +267,7 @@ class SefazDownloader {
         curl_setopt($ch, CURLOPT_REFERER, $url);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
-
-        session_start();
+        
         $postfields = array();
         $postfields['__EVENTTARGET'] = "";
         $postfields['__EVENTARGUMENT'] = "";

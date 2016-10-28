@@ -2,6 +2,7 @@
 ini_set('display_errors', 1);
 session_start();
 require_once './vendor/autoload.php';
+
 //$_SESSION['captcha'] = '';
 
 use sefazd\SefazDownloader;
@@ -11,20 +12,31 @@ $a = filter_input(INPUT_POST, 'action');
 if ($a == 'getDoc') {
     $chave = filter_input(INPUT_POST, 'chave');
     $captcha = filter_input(INPUT_POST, 'captcha');
+    $_SESSION['captcha'] = $captcha;
     //$html = SefazDownloader::getResult($chave, $captcha);
 
-    $cnpj = "86933033000100";        
+    $cnpj = "86933033000100";
 
     $path = "/var/www/sefazd/";
 
     $pass = "245792457";
-    
-    $html = SefazDownloader::downloadXmlSefaz($captcha, $chave, $cnpj, $path, $pass);
-    
-    $_SESSION['captcha'] = $captcha;
+
+    $xml = SefazDownloader::downloadXmlSefaz($captcha, $chave, $cnpj, $path, $pass);
+
+    if ($xml == 'erro') {
+        $html = SefazDownloader::getResult($chave, $captcha);
+        $match = strstr($html, 'Dados da NF-e');
+        if (!$match) {
+            HTMLReader::read($html);
+        } else {
+            echo "Nenhuma nota encontrada.";
+        }
+        $_SESSION['captcha'] = '';
+    }else{
+        //processa xml upload
+    }
 
     //HTMLReader::read($html);
-
 //    echo "<br>-- html resposta 1 -- <br/>" . $html;
 //
 //    $match = strstr($html, 'Dados da NF-e');

@@ -1,6 +1,6 @@
 <?php
 
-namespace sefazd;
+namespace SefazDownloader;
 
 class HTMLReader {
 

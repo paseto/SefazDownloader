@@ -2,8 +2,10 @@
 *.txt
 *.xml
 *.pem
+*.git
 .gitignore
 .htaccess
+.git/
 composer.json
 cookies1.txt
 result.php

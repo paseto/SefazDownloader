@@ -1,12 +1,14 @@
 <?php
 ini_set('display_errors', 1);
 session_start();
-require_once './vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 //$_SESSION['captcha'] = '';
 
-use sefazd\SefazDownloader;
-use sefazd\HTMLReader;
+use SefazDownloader\SefazDownloader;
+use SefazDownloader\HTMLReader;
+
+$sd = new SefazDownloader();
 
 $a = filter_input(INPUT_POST, 'action');
 if ($a == 'getDoc') {
@@ -75,7 +77,7 @@ if ($a == 'getDoc') {
       <?php
       if (empty($_SESSION['captcha'])) {
           ?>
-          <img src="<?php echo SefazDownloader::loadCaptcha(); ?>" />
+          <img src="<?php echo $sd->loadCaptcha(); ?>" />
           <input type="text" name="captcha" placeholder="captcha" />
           <?php
       } else {

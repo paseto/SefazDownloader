@@ -6,7 +6,7 @@
 .gitignore
 .htaccess
 .git/
-composer.json
+composer.lock
 cookies1.txt
 read.php
 result.php

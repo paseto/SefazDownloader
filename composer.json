@@ -1,6 +1,8 @@
 {
   "name": "paseto/sefazd",
   "description": "Download/Reader dados do documento/xml do Portal SEFAZ",
+  "licence":"MIT",
+  "type": "library",
   "authors": [
     {
       "name": "Giovani Paseto",

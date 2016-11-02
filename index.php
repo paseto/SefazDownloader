@@ -15,7 +15,7 @@ if ($a == 'getDoc') {
     $chave = filter_input(INPUT_POST, 'chave');
     $captcha = filter_input(INPUT_POST, 'captcha');
     $_SESSION['captcha'] = $captcha;
-    //$html = SefazDownloader::getResult($chave, $captcha);
+    $html = SefazDownloader::getResult($chave, $captcha);
 
     $cnpj = "86933033000100";
 

@@ -8,5 +8,6 @@
 .git/
 composer.json
 cookies1.txt
+read.php
 result.php
 vendor/

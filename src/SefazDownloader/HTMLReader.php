@@ -1,6 +1,6 @@
 <?php
 
-namespace sefazd;
+namespace SefazDownloader;
 
 class HTMLReader {
 
@@ -16,13 +16,13 @@ class HTMLReader {
         $dom->loadHTML($html);
         $xpath = new \DOMXPath($dom);
 
-        $legend = array("Dados Gerais", "Dados da NF-e", "Emitente", "Destinatário", "Emissão", "Dados do Emitente", "Dados do Destinatário", "Totais", "ICMS", "Dados do Transporte", "Transportador", "Volumes", "Informações Adicionais", "Informações Complementares de Interesse do Contribuinte", "Dados dos Produtos e Serviços", "ICMS Normal e ST", "Imposto Sobre Produtos Industrializados", "PIS", "COFINS");
+        $legend = array("Dados Gerais", "Dados da NF-e", "Emitente", "Destinatário", "Emissão", "Dados do Emitente", "Dados do Destinatário", "Totais", "ICMS", "Dados do Transporte", "Transportador", "Volumes", "Informações Adicionais", "Informações Complementares de Interesse do Contribuinte", "ICMS Normal e ST", "Imposto Sobre Produtos Industrializados", "PIS", "COFINS");
+        //$legend = array("Dados Gerais", "Dados da NF-e", "Emitente", "Destinatário", "Emissão", "Dados do Emitente", "Dados do Destinatário", "Totais", "ICMS", "Dados do Transporte", "Transportador", "Volumes", "Informações Adicionais", "Informações Complementares de Interesse do Contribuinte", "Dados dos Produtos e Serviços", "ICMS Normal e ST", "Imposto Sobre Produtos Industrializados", "PIS", "COFINS");
+        //$legend = array("Dados dos Produtos e Serviços");
 
         //$tag = $xpath->query('//input[@name="ctl00$ContentPlaceHolder1$txtCaptcha"]');
         $tags = $xpath->query('//fieldset');
-        echo "<pre>";
         foreach ($tags as $tag) {
-            //echo '"'.trim($tag->nodeValue).'", ';
             //if (strstr($tag->nodeValue, "Dados Gerais")) {            
             foreach ($legend as $leg) {
                 if (strstr($tag->nodeValue, $leg)) {
@@ -33,21 +33,18 @@ class HTMLReader {
                     $ff = file_get_contents($fname . ".html");
                     //echo htmlentities($filename);
                     //HTMLReader::readNode($ff);
-                    $r[HTMLReader::beautify($leg)] = HTMLReader::readTags($ff);
+                    $ignore = 0;
+                    if ($leg == "Volumes") {
+                        $ignore = 1;
+                    }
+                    $r[HTMLReader::beautify($leg)] = HTMLReader::readTags($ff, $ignore);
                 }
             }
-
-            //echo "<pre>";
-            //print_r($tag);
-            //print_r($tag->nodeValue);
-            //$captcha = (trim($tag->getAttribute('value')));            
-            //$html = SefazDownloader::getResult($_POST['chave'], $captcha);
         }
-        print_r($r);
-        echo "</pre>";
+        return $r;
     }
 
-    public function readTags($html) {
+    public function readTags($html, $ignore = 0) {
 
         $nfe = array();
         $dom = new \DOMDocument();
@@ -56,22 +53,33 @@ class HTMLReader {
 
         //get all H1
         $items = $dom->getElementsByTagName('td');
-        //display all H1 text
-        for ($i = 0; $i < $items->length; $i++) {
+        $content = array();
+        for ($i = 0; $i < $items->length; $i++) {            
+//            foreach ($items->item($i)->childNodes as $node) {                
+//                $nv = '';
+//                if ($node->nodeName == "label"){
+//                    $content[] = [$node->nodeName => $node->nodeValue];
+//                    $nv = $node->nodeValue;
+//                }
+//                if ($node->nodeName == "span"){
+//                    $content[$nv] = [$node->nodeName => $node->nodeValue];
+//                }
+//            }
+
             $labels = $dom->getElementsByTagName('label');
             //for ($j = 0; $j < $labels->length; $j++) {
-            $label = $labels->item($i)->nodeValue;
-            //}
-
+            $label = $labels->item($i + $ignore)->nodeValue;
+            //}            
             $spans = $dom->getElementsByTagName('span');
             //for ($k = 0; $k < $spans->length; $k++) {
             $span = $spans->item($i)->nodeValue;
+            //echo $label." => ".$span."<br/>";
             //$nfe[trim(utf8_decode($label))] = utf8_decode($span);
-            $tlabel = (html_entity_decode(utf8_decode(($label))));
-            $nfe[HTMLReader::beautify($tlabel)] = utf8_decode(str_replace(array("\r", "\n"), "",($span)));
+            $tlabel = (html_entity_decode(utf8_decode(($label))));            
+            $nfe[HTMLReader::beautify($tlabel)] = utf8_decode(str_replace(array("\r", "\n"), "", ($span)));
             //}
-            //       echo $items->item($i)->nodeValue . "<br/>";
-        }
+            //       echo $items->item($i)->nodeValue . "<br/>";            
+        }        
         return $nfe;
     }
 
@@ -94,10 +102,11 @@ class HTMLReader {
         return $value;
     }
 
-    public function beautify($string){        
+    public function beautify($string) {
         $r = ucwords($string);
-        $s = str_replace(array("\r", "\n", " ","/"), "", $r);
+        $s = str_replace(array("\r", "\n", " ", "/"), "", $r);
         $t = HTMLReader::removeAcentos($s);
         return $t;
     }
+
 }

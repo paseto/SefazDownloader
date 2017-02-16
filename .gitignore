@@ -2,9 +2,12 @@
 *.txt
 *.xml
 *.pem
+*.git
 .gitignore
 .htaccess
-composer.json
+.git/
+composer.lock
 cookies1.txt
+read.php
 result.php
 vendor/

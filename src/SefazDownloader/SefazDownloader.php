@@ -9,12 +9,7 @@ class SefazDownloader
     }
 
     public function downloadXmlSefaz($txtCaptcha, $chNFe, $CNPJ, $PathCertificado, $PassCertificado)
-    {
-        $CNPJ;
-
-        $PathCertificado;
-
-        $PassCertificado;
+    {        
 
         $url = 'http://www.nfe.fazenda.gov.br/portal/consulta.aspx?tipoConsulta=completa&tipoConteudo=XbSeqxE8pl8=';
 
@@ -50,7 +45,7 @@ class SefazDownloader
         $postfields['hiddenInputToUpdateATBuffer_CommonToolkitScripts'] = '1';
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-        $html = curl_exec($ch); // Get result after login page.
+        $html = curl_exec($ch); // Get result after login page.        
         curl_close($ch);
 
         $ch = curl_init();
@@ -216,7 +211,7 @@ class SefazDownloader
         preg_match('~<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="(.*?)" />~', $html, $_stategen);
         preg_match('~<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="(.*?)" />~', $html, $_eventValidation);
         preg_match('~<input type="hidden" name="ctl00\$ContentPlaceHolder1\$token" id="ctl00_ContentPlaceHolder1_token" value="(.*?)" />~', $html, $_sstoken);
-        preg_match('~<img id=\"ctl00_ContentPlaceHolder1_imgCaptcha\" src=\"(.*)\" style~', $html, $_captcha);
+        preg_match('~<img id=\"ctl00_ContentPlaceHolder1_imgCaptcha\" src=\"(.*)\"~', $html, $_captcha);
 
         $stategen = $_stategen[1];
         $_SESSION['stategen'] = $stategen;

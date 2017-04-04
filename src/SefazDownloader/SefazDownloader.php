@@ -4,13 +4,21 @@ namespace SefazDownloader;
 
 class SefazDownloader
 {
-    public function __construct()
-    {
-    }
-
+    /**
+     * Download documento XML do portal da SEFAZ.
+     *
+     * @param type $txtCaptcha      Código captcha
+     * @param type $chNFe           Chave de acesso 44 dígitos
+     * @param type $CNPJ            Números apenas
+     * @param type $PathCertificado Caminho completo do certificado .pem
+     * @param type $PassCertificado Senha do certificado
+     *
+     * @return string
+     *
+     * @throws \Exception
+     */
     public function downloadXmlSefaz($txtCaptcha, $chNFe, $CNPJ, $PathCertificado, $PassCertificado)
-    {        
-
+    {
         $url = 'http://www.nfe.fazenda.gov.br/portal/consulta.aspx?tipoConsulta=completa&tipoConteudo=XbSeqxE8pl8=';
 
         $cookie = 'cookies1.txt';
@@ -45,7 +53,7 @@ class SefazDownloader
         $postfields['hiddenInputToUpdateATBuffer_CommonToolkitScripts'] = '1';
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-        $html = curl_exec($ch); // Get result after login page.        
+        $html = curl_exec($ch); // Get result after login page.
         curl_close($ch);
 
         $ch = curl_init();
@@ -77,11 +85,7 @@ class SefazDownloader
         if (!empty($tagTeste)) {
             $tagDownload = $tagTeste[0];
         }
-        ////        try {
-//            $tagDownload = $tagTeste[0];
-//        } catch (\Exception $e) {
-//            throw new \Exception('Não foi possível fazer o download do XML, por favor atualize o captcha e tente novamente (sessão expirada)');
-//        }
+
 
         if ($tagDownload == 'Chave de Acesso') {
             $url_download = 'http://www.nfe.fazenda.gov.br/portal/consultaCompleta.aspx?tipoConteudo=XbSeqxE8pl8=';

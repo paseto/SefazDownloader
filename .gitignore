@@ -8,6 +8,7 @@
 .git/
 composer.lock
 cookies1.txt
+index.php
 read.php
 result.php
 vendor/

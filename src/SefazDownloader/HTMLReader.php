@@ -32,10 +32,13 @@ class HTMLReader
                     }
                     $r[self::beautify($leg)] = self::readTags($ff, $ignore);
                 }
-            }
-            if (is_file($fname)) {
-                unlink($fname);
-            }
+            }            
+        }
+        
+        foreach (glob("*.html") as $filename) {
+          if (is_file($filename)) {
+            unlink($filename);
+          }
         }
 
         return $r;

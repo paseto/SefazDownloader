@@ -10,40 +10,40 @@ $sd = new SefazDownloader();
 
 $a = filter_input(INPUT_POST, 'action');
 if ($a == 'getDoc') {
-    $chave = filter_input(INPUT_POST, 'chave');
-    $captcha = filter_input(INPUT_POST, 'captcha');
-    $_SESSION['captcha'] = '';
-    //$html = SefazDownloader::getResult($chave, $captcha);
-    //$html = __DIR__."/4316110798661800011155111000046985111a6897953.html";
-    $html = file_get_contents("/var/www/sefazd/43161107986618000111551110000469851116897953.html");
-    $r = HTMLReader::read($html);
-    echo "<pre>";
-    echo substr(trim($r['DadosDoTransporte']['ModalidadeDoFrete']), 0, 1);
-    //print_r($r);
-    exit();
-    $cnpj = "86933033000100";
-
-    $path = "/var/www/sefazd/";
-
-    $pass = "245792457";
-
-    $xml = 'erro'; //SefazDownloader::downloadXmlSefaz($captcha, $chave, $cnpj, $path, $pass);
-
-    if ($xml == 'erro') {
-        $html = SefazDownloader::getResult($chave, $captcha);
-        $match = strstr($html, 'Dados da NF-e');
-        if (!$match) {
-            echo "111";
-            $r = HTMLReader::read($html);
-            echo "<pre>";
-            print_r($r);
-        } else {
-            echo "Nenhuma nota encontrada.";
-        }
-        $_SESSION['captcha'] = '';
-    } else {
-        //processa xml upload
-    }
+//    $chave = filter_input(INPUT_POST, 'chave');
+//    $captcha = filter_input(INPUT_POST, 'captcha');
+//    $_SESSION['captcha'] = '';
+//    //$html = SefazDownloader::getResult($chave, $captcha);
+//    //$html = __DIR__."/4316110798661800011155111000046985111a6897953.html";
+//    $html = file_get_contents("/var/www/sefazd/43161107986618000111551110000469851116897953.html");
+//    $r = HTMLReader::read($html);
+//    echo "<pre>";
+//    echo substr(trim($r['DadosDoTransporte']['ModalidadeDoFrete']), 0, 1);
+//    //print_r($r);
+//    exit();
+//    $cnpj = "86933033000100";
+//
+//    $path = "/var/www/sefazd/";
+//
+//    $pass = "245792457";
+//
+//    $xml = 'erro'; //SefazDownloader::downloadXmlSefaz($captcha, $chave, $cnpj, $path, $pass);
+//
+//    if ($xml == 'erro') {
+//        $html = SefazDownloader::getResult($chave, $captcha);
+//        $match = strstr($html, 'Dados da NF-e');
+//        if (!$match) {
+//            echo "111";
+//            $r = HTMLReader::read($html);
+//            echo "<pre>";
+//            print_r($r);
+//        } else {
+//            echo "Nenhuma nota encontrada.";
+//        }
+//        $_SESSION['captcha'] = '';
+//    } else {
+//        //processa xml upload
+//    }
 
     //HTMLReader::read($html);
 //    echo "<br>-- html resposta 1 -- <br/>" . $html;

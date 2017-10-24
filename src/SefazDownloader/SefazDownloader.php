@@ -4,6 +4,11 @@ namespace SefazDownloader;
 
 class SefazDownloader
 {
+    
+    private $urlConsulta = 'http://www.nfe.fazenda.gov.br/portal/consultaResumoCompletaAntiga.aspx?tipoConsulta='
+        . 'completa&tipoConteudo=XbSeqxE8pl8=';
+
+
     /**
      * Download documento XML do portal da SEFAZ.
      *
@@ -19,11 +24,12 @@ class SefazDownloader
      */
     public function downloadXmlSefaz($txtCaptcha, $chNFe, $CNPJ, $PathCertificado, $PassCertificado)
     {
-        $url = 'http://www.nfe.fazenda.gov.br/portal/consulta.aspx?tipoConsulta=completa&tipoConteudo=XbSeqxE8pl8=';
+        $url = $this->urlConsulta;
 
         $cookie = 'cookies1.txt';
 
-        $useragent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36';
+        $useragent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 '
+            . '(KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -75,8 +81,16 @@ class SefazDownloader
 
         preg_match('~Chave de Acesso~', $html, $tagTeste);
         preg_match('~<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="(.*?)" />~', $html, $viewstate);
-        preg_match('~<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="(.*?)" />~', $html, $stategen);
-        preg_match('~<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="(.*?)" />~', $html, $eventValidation);
+        preg_match(
+            '~<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="(.*?)" />~',
+            $html,
+            $stategen
+        );
+        preg_match(
+            '~<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="(.*?)" />~',
+            $html,
+            $eventValidation
+        );
         $stategen = $stategen[1];
         $viewstate = $viewstate[1];
         $eventValidation = $eventValidation[1];
@@ -189,7 +203,7 @@ class SefazDownloader
      */
     public function loadCaptcha()
     {
-        $url = 'http://www.nfe.fazenda.gov.br/portal/consulta.aspx?tipoConsulta=completa&tipoConteudo=XbSeqxE8pl8=';
+        $url = $this->urlConsulta;
         $cookie = 'cookies1.txt';
         $useragent = filter_input(INPUT_SERVER, 'HTTP_USER_AGENT'); // $_SERVER['HTTP_USER_AGENT'];
 
@@ -200,9 +214,8 @@ class SefazDownloader
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
-
         $html = curl_exec($ch);
-
+        
         curl_close($ch);
 
         $_viewstate = array();
@@ -212,9 +225,18 @@ class SefazDownloader
         $_captcha = array();
 
         preg_match('~<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="(.*?)" />~', $html, $_viewstate);
-        preg_match('~<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="(.*?)" />~', $html, $_stategen);
-        preg_match('~<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="(.*?)" />~', $html, $_eventValidation);
-        preg_match('~<input type="hidden" name="ctl00\$ContentPlaceHolder1\$token" id="ctl00_ContentPlaceHolder1_token" value="(.*?)" />~', $html, $_sstoken);
+        preg_match(
+            '~<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="(.*?)" />~',
+            $html,
+            $_stategen
+        );
+        preg_match(
+            '~<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="(.*?)" />~',
+            $html,
+            $_eventValidation
+        );
+        preg_match('~<input type="hidden" name="ctl00\$ContentPlaceHolder1\$token" id="ctl00_ContentPlaceHolder1_token"'
+            . ' value="(.*?)" />~', $html, $_sstoken);
         preg_match('~<img id=\"ctl00_ContentPlaceHolder1_imgCaptcha\" src=\"(.*)\"~', $html, $_captcha);
 
         $stategen = $_stategen[1];
@@ -248,7 +270,7 @@ class SefazDownloader
             $txtCaptcha = $_SESSION['captcha'];
         }
 
-        $url = 'http://www.nfe.fazenda.gov.br/portal/consulta.aspx?tipoConsulta=completa&tipoConteudo=XbSeqxE8pl8=';
+        $url = $this->urlConsulta;
 
         $cookie = 'cookies1.txt';
 

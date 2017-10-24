@@ -13,7 +13,10 @@ class HTMLReader
         $dom->loadHTML($html);
         $xpath = new \DOMXPath($dom);
 
-        $legend = array('Dados Gerais', 'Dados da NF-e', 'Emitente', 'Destinatário', 'Emissão', 'Dados do Emitente', 'Dados do Destinatário', 'Totais', 'ICMS', 'Dados do Transporte', 'Transportador', 'Volumes', 'Informações Adicionais', 'Informações Complementares de Interesse do Contribuinte', 'ICMS Normal e ST', 'Imposto Sobre Produtos Industrializados', 'PIS', 'COFINS');
+        $legend = array('Dados Gerais', 'Dados da NF-e', 'Emitente', 'Destinatário', 'Emissão', 'Dados do Emitente',
+            'Dados do Destinatário', 'Totais', 'ICMS', 'Dados do Transporte', 'Transportador', 'Volumes',
+            'Informações Adicionais', 'Informações Complementares de Interesse do Contribuinte',
+            'ICMS Normal e ST', 'Imposto Sobre Produtos Industrializados', 'PIS', 'COFINS');
 
         $tags = $xpath->query('//fieldset');
         $tagCount = 0;
@@ -32,13 +35,13 @@ class HTMLReader
                     }
                     $r[self::beautify($leg)] = self::readTags($ff, $ignore);
                 }
-            }            
+            }
         }
         
         foreach (glob("*.html") as $filename) {
-          if (is_file($filename)) {
-            unlink($filename);
-          }
+            if (is_file($filename)) {
+                unlink($filename);
+            }
         }
 
         return $r;

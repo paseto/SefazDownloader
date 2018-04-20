@@ -214,6 +214,7 @@ class SefazDownloader
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
         $html = curl_exec($ch);
         
         curl_close($ch);
